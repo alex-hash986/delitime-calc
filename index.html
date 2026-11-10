@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Сравните расходы на личное авто, такси и Делимобиль на своих маршрутах.">
+  <meta name="theme-color" content="#f6f6ef">
+  <title>Делимобиль — калькулятор поездок</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23243a29'/%3E%3Cpath d='m7 23 7-14h6l-7 14zm9 0 7-14h4l-7 14z' fill='%23d5f982'/%3E%3C/svg%3E">
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="mark" viewBox="0 0 24 24"><path d="M4 18 10 6h5L9 18H4Zm8 0 6-12h3l-6 12h-3Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="car" viewBox="0 0 24 24"><path d="m5 11 1.5-4A2 2 0 0 1 8.4 6h7.2a2 2 0 0 1 1.9 1L19 11m-14 0h14a2 2 0 0 1 2 2v4H3v-4a2 2 0 0 1 2-2Zm1 6v2m12-2v2M7 14h1m8 0h1"/></symbol>
+    <symbol id="taxi" viewBox="0 0 24 24"><path d="M9 6V3h6v3m-10 5 1.5-4A2 2 0 0 1 8.4 6h7.2a2 2 0 0 1 1.9 1L19 11m-14 0h14a2 2 0 0 1 2 2v4H3v-4a2 2 0 0 1 2-2Zm1 6v2m12-2v2M7 14h1m8 0h1"/></symbol>
+    <symbol id="sliders" viewBox="0 0 24 24"><path d="M4 7h6m4 0h6M4 17h10m4 0h2M10 4v6m4 4v6"/></symbol>
+    <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="trend" viewBox="0 0 24 24"><path d="m4 7 6 6 4-4 6 7m-6 0h6v-6"/></symbol>
+    <symbol id="gift" viewBox="0 0 24 24"><path d="M4 11h16v10H4zm-1-4h18v4H3zm9 0v14m0-14C7 7 6 6 6 4.5S9 1 12 7Zm0 0c5 0 6-1 6-2.5S15 1 12 7Z"/></symbol>
+  </svg>
+
+  <header class="site-header"><div class="shell header-row">
+    <a href="#top" class="wordmark" aria-label="Делимобиль, в начало"><span class="brand-icon"><svg class="icon"><use href="#mark"/></svg></span> делимобиль</a>
+    <a href="#calculator" class="header-link">Калькулятор поездок <span aria-hidden="true">↘</span></a>
+  </div></header>
+
+  <main id="top" class="shell">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="signal"></span> КАЛЬКУЛЯТОР ВЫГОДЫ</p>
+        <h1 id="hero-title">Во сколько обходятся <em>ваши поездки?</em></h1>
+        <p class="hero-description">Сравните личное авто, такси и Делимобиль. Посчитайте расходы на своих маршрутах за месяц.</p>
+      </div>
+      <div class="hero-map" aria-hidden="true">
+        <svg viewBox="0 0 480 300" fill="none" preserveAspectRatio="xMidYMid slice">
+          <defs><pattern id="map-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" stroke="#46604b" stroke-opacity=".5"/></pattern></defs>
+          <rect width="480" height="300" fill="url(#map-grid)"/>
+          <path d="M-30 90h110l55-55h95l50 50h92l62-62h64M-20 246h92l48-48h93l55 55h242M56 0v65l65 65v170M330 0v107l50 50v143M0 151h174l60-60V0M178 300v-60l60-60h76l46-46h140" stroke="#52705a" stroke-width="2" opacity=".62"/>
+          <path d="M70 218h74c15 0 26-11 26-26v-39c0-15 12-27 27-27h51c15 0 27-12 27-27v-6c0-15 12-27 27-27h83" stroke="#9be344" stroke-opacity=".2" stroke-width="15" stroke-linecap="round"/>
+          <path d="M70 218h74c15 0 26-11 26-26v-39c0-15 12-27 27-27h51c15 0 27-12 27-27v-6c0-15 12-27 27-27h83" stroke="#c9fa61" stroke-width="3" stroke-dasharray="6 8" stroke-linecap="round"/>
+          <circle cx="70" cy="218" r="14" fill="#27402b" stroke="#a8d769"/><circle cx="70" cy="218" r="5" fill="#d2fa74"/>
+          <path d="M406 59c0 15-21 34-21 34s-21-19-21-34a21 21 0 0 1 42 0Z" fill="#cdfa71"/><circle cx="385" cy="59" r="7" fill="#213826"/>
+          <g transform="translate(223 126) rotate(-11)">
+            <rect x="-36" y="-29" width="72" height="58" rx="15" fill="#d3fa78" stroke="#f1ffc2"/>
+            <use href="#car" x="-19" y="-19" width="38" height="38" stroke="#203323" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+        </svg>
+        <span class="map-label"><span class="signal"></span> ВАШ ГОРОД · ВАШ МАРШРУТ</span>
+      </div>
+    </section>
+
+    <div id="calculator" class="workspace">
+      <section class="panel controls" aria-labelledby="controls-title">
+        <div class="section-title"><span class="tile"><svg class="icon"><use href="#sliders"/></svg></span><h2 id="controls-title">Ваши поездки</h2></div>
+        <div class="control">
+          <div class="flex items-center justify-between gap-2 control-heading"><label for="distance">Дневной пробег</label><output id="distance-value" for="distance">25 км</output></div>
+          <input id="distance" type="range" min="5" max="100" step="5" value="25">
+          <div class="range-labels" aria-hidden="true"><span>5 км</span><span>100 км</span></div>
+        </div>
+        <div class="control">
+          <div class="flex items-center justify-between gap-2 control-heading"><label for="days">Дней поездок в неделю</label><output id="days-value" for="days">5 дней</output></div>
+          <input id="days" type="range" min="1" max="7" step="1" value="5">
+          <div class="range-labels" aria-hidden="true"><span>1 день</span><span>7 дней</span></div>
+        </div>
+        <fieldset class="control">
+          <legend>Класс авто</legend>
+          <div class="segmented">
+            <label><input type="radio" name="scenario" value="economy" checked><span>Эконом</span></label>
+            <label><input type="radio" name="scenario" value="comfort"><span>Комфорт</span></label>
+          </div>
+        </fieldset>
+        <p class="mileage"><span class="signal"></span> <strong id="monthly-km">542 км</strong> за средний месяц</p>
+      </section>
+
+      <section class="results" aria-labelledby="results-title">
+        <p class="eyebrow results-kicker">01 / СРАВНЕНИЕ</p>
+        <h2 id="results-title">Расходы в месяц</h2>
+        <div class="comparison" aria-live="polite" aria-atomic="true">
+          <article class="price-card" data-option="car">
+            <div class="card-top"><span class="tile"><svg class="icon"><use href="#car"/></svg></span><span class="badge" hidden>Выгоднее всего</span></div>
+            <h3>Своё авто</h3><p class="price" id="car-total">—</p><p class="card-caption">Топливо и содержание</p>
+          </article>
+          <article class="price-card" data-option="taxi">
+            <div class="card-top"><span class="tile"><svg class="icon"><use href="#taxi"/></svg></span><span class="badge" hidden>Выгоднее всего</span></div>
+            <h3>Такси</h3><p class="price" id="taxi-total">—</p><p class="card-caption">Подача, километры и время</p>
+          </article>
+          <article class="price-card featured" data-option="deli">
+            <div class="card-top"><span class="tile"><svg class="icon"><use href="#mark"/></svg></span><span class="badge" hidden>Выгоднее всего</span></div>
+            <h3>Делимобиль</h3><p class="price" id="deli-total">—</p><p class="card-caption" id="deli-caption">Поминутный тариф</p>
+          </article>
+        </div>
+        <div class="savings" aria-live="polite" aria-atomic="true">
+          <span class="tile"><svg class="icon"><use href="#trend"/></svg></span>
+          <div><h3>Разница с Делимобилем</h3><p id="car-savings"></p><p id="taxi-savings"></p></div>
+        </div>
+        <p class="included">В расчёте Делимобиля уже учтены бензин, мойка, страховка и разрешённые городские парковки.</p>
+      </section>
+    </div>
+
+    <section class="panel breakdown" aria-labelledby="breakdown-title">
+      <div class="breakdown-heading"><div><p class="eyebrow results-kicker">02 / СТРУКТУРА РАСХОДОВ</p><h2 id="breakdown-title">Куда уходят деньги на личном авто</h2></div><strong id="breakdown-total">—</strong></div>
+      <div class="cost-bar" id="cost-bar" aria-hidden="true"></div>
+      <dl class="cost-list" id="cost-list"></dl>
+    </section>
+
+    <section class="promo" aria-labelledby="promo-title">
+      <div class="promo-copy"><p class="eyebrow"><svg class="icon"><use href="#gift"/></svg> БОНУС НА СТАРТ</p><h2 id="promo-title">Первая поездка с бонусами</h2><p>Скопируйте промокод и введите его при регистрации в приложении.</p></div>
+      <div class="promo-action">
+        <a class="cta" id="promo-link" target="_blank" rel="noopener noreferrer">Забрать 500 бонусов на первую поездку <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
+        <p class="promo-code">Промокод <code id="promo-code"></code><span id="demo-note" hidden> · Демо</span></p>
+      </div>
+    </section>
+    <details class="method"><summary>Как считаем</summary><p id="method-text"></p><p>Расчёт иллюстративный. Цены зависят от города, времени, маршрута и тарифа. Бонусы в месячные расходы не входят.</p></details>
+    <noscript><p>Включите JavaScript, чтобы рассчитать расходы и скопировать промокод.</p></noscript>
+  </main>
+  <footer class="shell site-footer"><span>Делимобиль · Калькулятор поездок</span><span>Оценка расходов · 18+</span></footer>
+  <div class="toast" id="toast" role="status" aria-atomic="true"></div>
+</body>
+</html>
