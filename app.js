@@ -11,8 +11,6 @@ const dayLabels = { one: 'день', few: 'дня', many: 'дней' };
 const distance = byId('distance');
 const days = byId('days');
 const cards = document.querySelectorAll('.price-card');
-const toast = byId('toast');
-let toastTimer;
 
 const costItems = [
   ['fuel', 'Бензин', '#a5cc5b'],
@@ -119,24 +117,15 @@ function render() {
   }
 }
 
-function showToast(message) {
-  clearTimeout(toastTimer);
-  toast.textContent = message;
-  toast.classList.add('visible');
-  toastTimer = setTimeout(() => {
-    toast.classList.remove('visible');
-    toast.textContent = '';
-  }, 4500);
-}
-
-function copyWithSelection(text) {
+function copyWithSelection(text, container) {
   const field = document.createElement('textarea');
   field.value = text;
   field.readOnly = true;
   field.style.cssText = 'position: fixed; inset: 0 auto auto 0; opacity: 0; pointer-events: none';
   const previousFocus = document.activeElement;
-  document.body.append(field);
+  container.append(field);
   try {
+    field.focus({ preventScroll: true });
     field.select();
     field.setSelectionRange(0, text.length);
     return document.execCommand('copy');
@@ -148,32 +137,47 @@ function copyWithSelection(text) {
   }
 }
 
-async function copyPromo(code) {
+async function copyPromo(code, container) {
   try {
     await navigator.clipboard.writeText(code);
     return true;
   } catch {
-    return copyWithSelection(code);
+    return copyWithSelection(code, container);
   }
 }
 
-const { code, url, demo } = config.promo;
+const { promoCode, bonusAmount, url, demo } = config.promo;
+const promoDialog = byId('promo-dialog');
+const promoStatus = byId('promo-copy-status');
+const copyAgain = byId('promo-copy-again');
 const promoLink = byId('promo-link');
 promoLink.href = url;
-byId('promo-code').textContent = code;
+byId('promo-code').textContent = promoCode;
+byId('dialog-promo-code').textContent = promoCode;
 byId('demo-note').hidden = !demo;
-promoLink.addEventListener('click', (event) => {
-  telegram?.HapticFeedback?.impactOccurred('light');
-  // Start copying and open the link in the same click, while user activation is available.
-  void copyPromo(code).then((copied) => {
-    if (copied) {
-      telegram?.HapticFeedback?.notificationOccurred('success');
-      showToast(`Промокод ${code} скопирован`);
-    } else {
-      showToast(`Скопируйте промокод вручную: ${code}`);
-    }
-  });
+document.querySelectorAll('[data-bonus]').forEach((element) => {
+  element.textContent = number.format(bonusAmount);
+});
 
+async function copyAndUpdateStatus() {
+  if (copyAgain.getAttribute('aria-disabled') === 'true') return;
+  copyAgain.setAttribute('aria-disabled', 'true');
+  promoStatus.textContent = 'Копируем промокод…';
+  const copied = await copyPromo(promoCode, promoDialog);
+  copyAgain.removeAttribute('aria-disabled');
+  promoStatus.textContent = copied
+    ? 'Промокод скопирован в буфер!'
+    : 'Выделите код ниже и скопируйте его вручную.';
+  if (copied) telegram?.HapticFeedback?.notificationOccurred('success');
+}
+
+byId('promo-trigger').addEventListener('click', () => {
+  promoDialog.showModal();
+  void copyAndUpdateStatus();
+});
+copyAgain.addEventListener('click', copyAndUpdateStatus);
+
+promoLink.addEventListener('click', (event) => {
   if (telegram?.isVersionAtLeast?.('6.1')) {
     try {
       if (new URL(promoLink.href).hostname === 't.me') {

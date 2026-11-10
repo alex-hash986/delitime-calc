@@ -22,6 +22,8 @@
     <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
     <symbol id="trend" viewBox="0 0 24 24"><path d="m4 7 6 6 4-4 6 7m-6 0h6v-6"/></symbol>
     <symbol id="gift" viewBox="0 0 24 24"><path d="M4 11h16v10H4zm-1-4h18v4H3zm9 0v14m0-14C7 7 6 6 6 4.5S9 1 12 7Zm0 0c5 0 6-1 6-2.5S15 1 12 7Z"/></symbol>
+    <symbol id="copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 4H6a2 2 0 0 0-2 2v10"/></symbol>
+    <symbol id="close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
   </svg>
 
   <header class="site-header"><div class="shell header-row">
@@ -109,9 +111,9 @@
     </section>
 
     <section class="promo" aria-labelledby="promo-title">
-      <div class="promo-copy"><p class="eyebrow"><svg class="icon"><use href="#gift"/></svg> БОНУС НА СТАРТ</p><h2 id="promo-title">Первая поездка с бонусами</h2><p>Скопируйте промокод и введите его при регистрации в приложении.</p></div>
+      <div class="promo-copy"><p class="eyebrow"><svg class="icon"><use href="#gift"/></svg> БОНУС НА СТАРТ</p><h2 id="promo-title"><span data-bonus>1&nbsp;000</span> бонусов на первую поездку</h2><p>Скопируйте промокод и активируйте его в приложении Делимобиль.</p></div>
       <div class="promo-action">
-        <a class="cta" id="promo-link" target="_blank" rel="noopener noreferrer">Забрать 500 бонусов на первую поездку <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
+        <button class="cta" id="promo-trigger" type="button" aria-haspopup="dialog"><span>Забрать <span data-bonus>1&nbsp;000</span> бонусов на первую поездку</span> <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></button>
         <p class="promo-code">Промокод <code id="promo-code"></code><span id="demo-note" hidden> · Демо</span></p>
       </div>
     </section>
@@ -119,6 +121,28 @@
     <noscript><p>Включите JavaScript, чтобы рассчитать расходы и скопировать промокод.</p></noscript>
   </main>
   <footer class="shell site-footer"><span>Делимобиль · Калькулятор поездок</span><span>Оценка расходов · 18+</span></footer>
-  <div class="toast" id="toast" role="status" aria-atomic="true"></div>
+  <dialog class="promo-dialog" id="promo-dialog" aria-labelledby="promo-dialog-title">
+    <div class="dialog-header">
+      <span class="tile dialog-gift"><svg class="icon" aria-hidden="true"><use href="#gift"/></svg></span>
+      <form method="dialog"><button type="submit" class="dialog-close" aria-label="Закрыть инструкцию" autofocus><svg class="icon" aria-hidden="true"><use href="#close"/></svg></button></form>
+    </div>
+    <p class="eyebrow">БОНУС НА СТАРТ</p>
+    <h2 id="promo-dialog-title">Как получить <span data-bonus>1&nbsp;000</span> бонусов</h2>
+    <ol class="promo-steps">
+      <li>
+        <div class="step-content">
+          <p id="promo-copy-status" role="status" aria-atomic="true">Копируем промокод…</p>
+          <div class="promo-ticket">
+            <code id="dialog-promo-code"></code>
+            <button type="button" id="promo-copy-again" class="copy-button"><svg class="icon" aria-hidden="true"><use href="#copy"/></svg> Копировать</button>
+          </div>
+        </div>
+      </li>
+      <li><p class="step-content">Скачайте или откройте приложение Делимобиль.</p></li>
+      <li><p class="step-content">Вставьте код в поле промокода при регистрации или в профиле в разделе «Бонусы».</p></li>
+      <li><p class="step-content">Совершите первую поездку — и <span data-bonus>1&nbsp;000</span> бонусов начислятся на ваш баланс!</p></li>
+    </ol>
+    <a class="cta dialog-cta" id="promo-link" target="_blank" rel="noopener noreferrer"><span>Перейти в приложение Делимобиль</span> <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
+  </dialog>
 </body>
 </html>

@@ -4,9 +4,10 @@ window.CALCULATOR_CONFIG = {
   averageSpeed: 28, // км/ч
   fuelPrice: 60, // ₽/л
   promo: {
-    code: 'DEMO500',
+    promoCode: 'REFPRRQ2',
+    bonusAmount: 1000,
     url: 'https://my.delimobil.ru/app',
-    demo: true,
+    demo: false,
   },
   tariffs: {
     economy: {
